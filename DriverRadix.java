@@ -33,9 +33,17 @@ public class DriverRadix {
     System.out.println();
     System.out.println("Unsorted: "+input+" "+input.size());
     Radix.radixSortSimple(input);
-    System.out.println("\nSorted: "+input+" "+input.size());
+    System.out.println("Sorted: "+input+" "+input.size());
 
-
+    SortableLinkedList input2 = new SortableLinkedList();
+    for (String num : args) {
+      int n = Integer.parseInt(num);
+      input2.add(n);
+    }
+    System.out.println("\n");
+    System.out.println("Unsorted: "+input2+" "+input2.size());
+    Radix.radixSort(input2);
+    System.out.println("Sorted: "+input2+" "+input2.size());
 
 
   }

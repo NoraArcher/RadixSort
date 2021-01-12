@@ -36,40 +36,54 @@ public class Radix {
         // System.out.println("Number to be sorted: "+here);
         // System.out.println("Looking at the "+(int)Math.pow(10, i)+"s place.");
         // System.out.println("The appropriate bucket: "+nth(here, i));
-        //Buckets[ nth(here, i) ] = Buckets[nth(here, i)].add(here);
+        // Buckets[ nth(here, i) ] = Buckets[nth(here, i)].add(here);
         SortableLinkedList aBucket = Buckets[nth(here, i)];
         aBucket.add( data.get(j) );
         Buckets[nth(here, i)] = aBucket;
         //System.out.println("Here's the bucket: "+Buckets[nth(here, i)] );
         if (i == 0 && length(here) > passes) passes = length(here);
       }
-      SortableLinkedList empty = new SortableLinkedList();
-      merge(empty, Buckets);
-      data = empty; //i can't do this, but if i loop backwards above and remove from data, the bucket sorting wont be in order
-      //merge(data, Buckets)
-      System.out.println("We've just ordered it by: "+(int)Math.pow(10, i)+"s place.");
-      System.out.println("Here's the merged data set: "+data);
+      for (int k = data.size() - 1; k >= 0; k--) {
+        data.remove(0);
+      }
+      merge(data, Buckets);
+      //System.out.println("We've just ordered it by: "+(int)Math.pow(10, i)+"s place.");
+      //System.out.println("Here's the merged data set: "+data);
     }
   }
-
+//bring up to what extent the capitol police were complicit
   public static void radixSort(SortableLinkedList data) {
-    //allow for negatives :{, DEFINITELY call the mrthod above
-    // SortableLinkedList negData, put this in simple sort as positive (do this while you're dividing the total data set), then flip and re-neg
-    // SortableLinkedList posData, put this in simple sort
-    // SortableLinkedList[] Positives;
-    // Positives = new SortableLinkedList[1];
-    // Positives[0] = posData;
-    // merge(negData, Positives);
-    // data = negData;
+    SortableLinkedList negData = new SortableLinkedList();
+    SortableLinkedList posData = new SortableLinkedList();
+    for (int i = 0; i < data.size(); i++) {
+      if (data.get(i) < 0) {
+        negData.add( -1 * data.get(i) );
+      } else {
+        posData.add( data.get(i) );
+      }
+    }
+    radixSortSimple(negData);
+    flipItandSwitchSigns(negData); //this didn't exactly happen
+    radixSortSimple(posData);
+    SortableLinkedList[] Numbers;
+    Numbers = new SortableLinkedList[2];
+    Numbers[0] = negData;
+    Numbers[1] = posData;
+    for (int k = data.size() - 1; k >= 0; k--) {
+      data.remove(0);
+    }
+    merge(data, Numbers);
   }
 
-  private static SortableLinkedList flipIt(SortableLinkedList data) {
-    return data;
-  }
-
-  private static void clear(SortableLinkedList data) {
+  private static void flipItandSwitchSigns(SortableLinkedList data) {
     SortableLinkedList temp = new SortableLinkedList();
-    data = temp; //this just... has no effect when called
+    for (int i = 0; i < data.size(); i++) {
+      temp.add(data.get(i));
+    }
+    for (int i = 0; i < temp.size(); i++) {
+      Integer x = temp.get(temp.size() - i - 1);
+      data.set( i , -1*x );
+    }
   }
 
 
