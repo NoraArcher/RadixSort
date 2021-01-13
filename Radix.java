@@ -21,57 +21,50 @@ public class Radix {
     }
   }
 
+//all of the above are constant time
+
   public static void radixSortSimple(SortableLinkedList data) {
     int passes = 1;
+    int setSize = data.size();
     System.out.println();
-    for (int i = 0; i < passes; i++) {
+    for (int i = 0; i < passes; i++) { //O(1) kinda?
       SortableLinkedList[] Buckets;
       Buckets = new SortableLinkedList[10];
-      for (int m = 0; m < 10; m++) {
+      for (int m = 0; m < 10; m++) { // O(1)
         SortableLinkedList temp = new SortableLinkedList();
         Buckets[m] = temp;
       }
-      for (int j = 0; j < data.size(); j++) {
-        int here = data.get(j).intValue();
-        // System.out.println("Number to be sorted: "+here);
-        // System.out.println("Looking at the "+(int)Math.pow(10, i)+"s place.");
-        // System.out.println("The appropriate bucket: "+nth(here, i));
-        // Buckets[ nth(here, i) ] = Buckets[nth(here, i)].add(here);
+      for (int j = 0; j < setSize; j++) { //O(N)
+        int here = data.get(0).intValue();
         SortableLinkedList aBucket = Buckets[nth(here, i)];
-        aBucket.add( data.get(j) );
+        aBucket.add( data.get(0) );
         Buckets[nth(here, i)] = aBucket;
-        //System.out.println("Here's the bucket: "+Buckets[nth(here, i)] );
         if (i == 0 && length(here) > passes) passes = length(here);
-      }
-      for (int k = data.size() - 1; k >= 0; k--) {
         data.remove(0);
       }
-      merge(data, Buckets);
-      //System.out.println("We've just ordered it by: "+(int)Math.pow(10, i)+"s place.");
-      //System.out.println("Here's the merged data set: "+data);
+      merge(data, Buckets); //O(1)
     }
   }
-//bring up to what extent the capitol police were complicit
-  public static void radixSort(SortableLinkedList data) {
+
+  public static void radixSort(SortableLinkedList data) { //this sh*t is way past O(N)
     SortableLinkedList negData = new SortableLinkedList();
     SortableLinkedList posData = new SortableLinkedList();
-    for (int i = 0; i < data.size(); i++) {
-      if (data.get(i) < 0) {
-        negData.add( -1 * data.get(i) );
+    int setSize = data.size();
+    for (int i = 0; i < setSize; i++) { //
+      if (data.get(0) < 0) {
+        negData.add( -1 * data.get(0) );
       } else {
-        posData.add( data.get(i) );
+        posData.add( data.get(0) );
       }
+      data.remove(0);
     }
-    radixSortSimple(negData);
-    flipItandSwitchSigns(negData); //this didn't exactly happen
-    radixSortSimple(posData);
+    radixSortSimple(negData); // O(N)
+    flipItandSwitchSigns(negData);
+    radixSortSimple(posData); // O(N)
     SortableLinkedList[] Numbers;
     Numbers = new SortableLinkedList[2];
     Numbers[0] = negData;
     Numbers[1] = posData;
-    for (int k = data.size() - 1; k >= 0; k--) {
-      data.remove(0);
-    }
     merge(data, Numbers);
   }
 
