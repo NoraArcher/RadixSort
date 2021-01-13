@@ -1,5 +1,3 @@
-//with negative numbers can you sort them as negstive digits?? so an array of 19 digits (-9 to 9)
-//or just ignore negs for now ???
 import java.lang.Math.*;
 public class Radix {
 
@@ -11,8 +9,7 @@ public class Radix {
 
   public static int length(int n) {
     if (n < 0) n = -1 * n;
-    String word = n + "";
-    return word.length();
+    return (int)(Math.log10(n)+1);
   }
 
   public static void merge(SortableLinkedList original, SortableLinkedList[] buckets) {
@@ -25,8 +22,7 @@ public class Radix {
 
   public static void radixSortSimple(SortableLinkedList data) {
     int passes = 1;
-    int setSize = data.size();
-    System.out.println();
+    int setSize = data.size();// O(1)
     for (int i = 0; i < passes; i++) { //O(1) kinda?
       SortableLinkedList[] Buckets;
       Buckets = new SortableLinkedList[10];
@@ -50,7 +46,7 @@ public class Radix {
     SortableLinkedList negData = new SortableLinkedList();
     SortableLinkedList posData = new SortableLinkedList();
     int setSize = data.size();
-    for (int i = 0; i < setSize; i++) { //
+    for (int i = 0; i < setSize; i++) { // O(N)
       if (data.get(0) < 0) {
         negData.add( -1 * data.get(0) );
       } else {
